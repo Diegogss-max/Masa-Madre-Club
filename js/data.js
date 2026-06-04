@@ -19,9 +19,9 @@ const MMC = (function() {
         phone: '+56912345678',
         role: 'client',
         address: {
-          street: 'Av. Providencia 1830, Depto 403',
-          commune: 'Providencia',
-          city: 'Santiago',
+          street: 'Av. Libertad 1250, Depto 802',
+          commune: 'Viña del Mar',
+          city: 'Viña del Mar',
           notes: 'Conserjería: dejar con el conserje Rodrigo en turno mañana'
         },
         avatar: '👩‍💼',
@@ -34,9 +34,9 @@ const MMC = (function() {
         phone: '+56987654321',
         role: 'partner',
         address: {
-          street: 'Calle Ñuble 340',
-          commune: 'Ñuñoa',
-          city: 'Santiago'
+          street: 'Calle Quillota 450',
+          commune: 'Viña Centro',
+          city: 'Viña del Mar'
         },
         avatar: '🏪',
         created_at: '2025-11-01T08:00:00Z'
@@ -79,11 +79,11 @@ const MMC = (function() {
         name: 'Panadería El Abuelo',
         owner_name: 'Jorge Soto',
         address: {
-          street: 'Calle Ñuble 340',
-          commune: 'Ñuñoa',
-          city: 'Santiago'
+          street: 'Calle Quillota 450',
+          commune: 'Viña Centro',
+          city: 'Viña del Mar'
         },
-        commune: 'Ñuñoa',
+        commune: 'Viña Centro',
         bread_types: [
           { type: 'integral', label: 'Masa Madre Integral', price: 1200, emoji: '🌾' },
           { type: 'semillas', label: 'Hogaza de Semillas', price: 1400, emoji: '🌻' },
@@ -99,11 +99,11 @@ const MMC = (function() {
         name: 'Almacén La Granja',
         owner_name: 'Ana Villanueva',
         address: {
-          street: 'Av. Irarrázaval 2850',
-          commune: 'Ñuñoa',
-          city: 'Santiago'
+          street: 'Av. Valparaíso 350',
+          commune: 'Viña Centro',
+          city: 'Viña del Mar'
         },
-        commune: 'Macul',
+        commune: 'Viña Centro',
         bread_types: [
           { type: 'integral', label: 'Masa Madre Integral', price: 1200, emoji: '🌾' },
           { type: 'baguette_fit', label: 'Baguette Fit', price: 1100, emoji: '🥖' }
@@ -129,8 +129,8 @@ const MMC = (function() {
         proof_photo_url: null,
         delivered_at: null,
         address: {
-          street: 'Av. Providencia 1830, Depto 403',
-          commune: 'Providencia',
+          street: 'Av. Libertad 1250, Depto 802',
+          commune: 'Viña del Mar',
           notes: 'Conserjería: Rodrigo'
         },
         items: [
@@ -151,8 +151,8 @@ const MMC = (function() {
         proof_photo_url: null,
         delivered_at: null,
         address: {
-          street: 'Calle Lyon 278, Casa',
-          commune: 'Providencia',
+          street: 'Av. San Martín 415, Casa',
+          commune: 'Viña del Mar',
           notes: 'Timbre 2B, dejar en puerta si no hay respuesta'
         },
         items: [
@@ -172,8 +172,8 @@ const MMC = (function() {
         proof_photo_url: 'delivered',
         delivered_at: '2026-06-05T07:42:00Z',
         address: {
-          street: 'Av. Nueva Providencia 1605, Depto 1502',
-          commune: 'Providencia',
+          street: 'Calle 1 Norte 890, Depto 1502',
+          commune: 'Viña del Mar',
           notes: 'Conserjería: dejar en recepción'
         },
         items: [
@@ -194,8 +194,8 @@ const MMC = (function() {
         proof_photo_url: null,
         delivered_at: null,
         address: {
-          street: 'Av. Manuel Montt 950, Depto 204',
-          commune: 'Providencia',
+          street: 'Av. Marina 250, Depto 204',
+          commune: 'Viña del Mar',
           notes: 'Timbre exterior: 204, llamar si no responde'
         },
         items: [
