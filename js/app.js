@@ -202,7 +202,7 @@ function renderBreadOptions() {
           <span class="qty-value" id="qty-val-${bread.type}">1</span>
           <button class="qty-btn" onclick="event.stopPropagation();changeQty('${bread.type}', 1)">+</button>
         </div>
-        <div class="bread-price">${MMC.formatCLP(bread.price_per_unit)}/pan</div>
+        <div class="bread-price" style="color:var(--color-sage-dark)">Incluido en plan</div>
       </div>
     </button>
   `).join('');
@@ -256,7 +256,7 @@ function updateBreadSummary() {
     const bread = MMC.BREAD_TYPES.find(b => b.type === type);
     return `<div class="sidebar-row">
       <span>${bread.emoji} ${bread.label} × ${qty}</span>
-      <span>${MMC.formatCLP(bread.price_per_unit * qty)}/entrega</span>
+      <span style="color:var(--color-sage-dark);font-weight:600">Incluido</span>
     </div>`;
   }).join('');
 
@@ -329,12 +329,12 @@ function renderCheckoutSummary() {
     return `<div class="checkout-plan-item">
       <span class="checkout-plan-emoji">${bread.emoji}</span>
       <span class="checkout-plan-name">${bread.label} × ${qty}</span>
-      <span class="checkout-plan-price">${MMC.formatCLP(bread.price_per_unit * qty)}/entrega</span>
+      <span class="checkout-plan-price" style="color:var(--color-sage-dark);font-weight:600">Incluido</span>
     </div>`;
   }).join('') || `<div class="checkout-plan-item">
     <span class="checkout-plan-emoji">🌾</span>
     <span class="checkout-plan-name">Masa Madre Integral × 2</span>
-    <span class="checkout-plan-price">$2.400/entrega</span>
+    <span class="checkout-plan-price" style="color:var(--color-sage-dark);font-weight:600">Incluido</span>
   </div>`;
 
   card.innerHTML = `
