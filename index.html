@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Masa Madre Club — Pan artesanal a domicilio en Chile</title>
+  <meta name="description" content="Suscripción mensual de pan de masa madre real a domicilio. Sin químicos, sin levadura comercial. El pan de los abuelos, en tu puerta." />
+  <meta name="theme-color" content="#3D2B1F" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/screens.css" />
+</head>
+<body>
+
+<!-- ===== TOP NAV ===== -->
+<nav class="top-nav" role="navigation" aria-label="Navegación principal">
+  <div class="nav-inner">
+    <div class="nav-logo" id="logo-link" style="cursor:pointer" onclick="Router.navigate('screen-landing')">
+      <div class="logo-icon">🍞</div>
+      <span>Masa Madre<br><small style="font-size:0.65rem;font-weight:400;font-family:var(--font-body);opacity:0.7">Club</small></span>
+    </div>
+
+    <div class="nav-links">
+      <a class="nav-link" href="#" onclick="Router.navigate('screen-landing')">Inicio</a>
+      <a class="nav-link" href="#" onclick="Router.navigate('screen-configurator')">Membresía</a>
+      <a class="nav-link" href="#como-funciona">¿Cómo funciona?</a>
+    </div>
+
+    <div class="nav-profile-switcher">
+      <button class="profile-tab active" data-role="client" id="tab-client">Cliente</button>
+      <button class="profile-tab" data-role="partner" id="tab-partner">Panadería</button>
+      <button class="profile-tab" data-role="delivery" id="tab-delivery">Repartidor</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== TOAST CONTAINER ===== -->
+<div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+<!-- ===== APP ===== -->
+<div id="app">
+
+  <!-- ========================================
+       SCREEN 1: LANDING PAGE
+       ======================================== -->
+  <section id="screen-landing" class="screen" role="main">
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-overlay"></div>
+      <div class="container hero-content">
+        <div class="hero-badge">
+          <span class="badge badge-earth">🌱 Sin levadura comercial · Fermentación real</span>
+        </div>
+        <h1 class="hero-title">
+          El pan de los abuelos,<br>
+          <em>en tu puerta.</em>
+        </h1>
+        <p class="hero-subtitle">
+          Sin químicos, sin culpa, sin filas en la panadería.<br>
+          Masa madre real entregada antes de que despiertes.
+        </p>
+        <div class="hero-cta-group">
+          <button class="btn btn-primary btn-lg" id="hero-cta" onclick="Router.navigate('screen-configurator')">
+            Crear mi suscripción
+            <span>→</span>
+          </button>
+          <button class="btn btn-ghost btn-lg" onclick="document.getElementById('como-funciona').scrollIntoView({behavior:'smooth'})">
+            ¿Cómo funciona?
+          </button>
+        </div>
+        <div class="hero-social-proof">
+          <div class="proof-avatars">
+            <span class="proof-avatar">👩</span>
+            <span class="proof-avatar">👨</span>
+            <span class="proof-avatar">👩‍🦱</span>
+            <span class="proof-avatar">🧔</span>
+          </div>
+          <p class="proof-text"><strong>+1.200 suscriptores</strong> en Santiago ya desayunan distinto</p>
+        </div>
+      </div>
+      <div class="hero-image-container">
+        <img src="assets/hero_bread.png" alt="Pan de masa madre artesanal" class="hero-image" />
+        <div class="hero-image-card">
+          <span class="mic-copy-tag">🔥 Horneado esta mañana</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Value Props -->
+    <section class="value-section" id="como-funciona">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-eyebrow">¿Por qué Masa Madre Club?</span>
+          <h2 class="section-title">Pan real, modelo inteligente</h2>
+          <p class="section-subtitle">Como Netflix, pero para el desayuno más importante del día</p>
+        </div>
+
+        <div class="value-grid">
+          <div class="value-card" id="val-1">
+            <div class="value-icon">🌾</div>
+            <h3>4 ingredientes</h3>
+            <p>Agua, harina, sal y tiempo. Nada más. Lo que tu abuela usaba, lo que tu cuerpo reconoce.</p>
+            <div class="micro-copy"><span class="icon">💬</span>"Sin químicos que tu intestino no entiende"</div>
+          </div>
+          <div class="value-card" id="val-2">
+            <div class="value-icon">📦</div>
+            <h3>Cero merma</h3>
+            <p>Solo se hornea lo que ya está vendido. Pan fresco garantizado, sin excedentes ni pan de ayer recalentado.</p>
+            <div class="micro-copy"><span class="icon">💬</span>"Hecho hoy: más liviano, mejor digestión"</div>
+          </div>
+          <div class="value-card" id="val-3">
+            <div class="value-icon">🚲</div>
+            <h3>Eco-Logística</h3>
+            <p>Repartidores en bicicleta o moto eléctrica. Bolsas kraft biodegradables. Carbono casi cero.</p>
+            <div class="micro-copy"><span class="icon">💬</span>"Del horno a tu puerta sin contaminar"</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="how-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-eyebrow">Súper simple</span>
+          <h2 class="section-title">Así funciona</h2>
+        </div>
+        <div class="steps-flow">
+          <div class="flow-step" id="flow-1">
+            <div class="flow-number">1</div>
+            <div class="flow-content">
+              <h4>Configura tu plan</h4>
+              <p>Elige cuántos días, qué horario y qué tipo de pan. 3 minutos, sin complicaciones.</p>
+            </div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step" id="flow-2">
+            <div class="flow-number">2</div>
+            <div class="flow-content">
+              <h4>La panadería hornea</h4>
+              <p>Solo lo que tú pediste. Sin merma. Con fermentación lenta de 18 horas.</p>
+            </div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step" id="flow-3">
+            <div class="flow-number">3</div>
+            <div class="flow-content">
+              <h4>Te despertás con pan</h4>
+              <p>Antes de las 8:30 AM en tu puerta o conserjería. Siempre fresco, siempre digno.</p>
+            </div>
+          </div>
+        </div>
+        <div class="text-center" style="margin-top:var(--space-2xl)">
+          <button class="btn btn-primary btn-lg" onclick="Router.navigate('screen-configurator')">
+            Empezar ahora — desde $22.900/mes
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Plans Preview -->
+    <section class="plans-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-eyebrow">Planes</span>
+          <h2 class="section-title">Elige tu frecuencia</h2>
+          <p class="section-subtitle">Pausa cuando quieras. Sin letras chicas.</p>
+        </div>
+        <div class="plans-grid">
+          <div class="plan-card" id="plan-basic">
+            <div class="plan-header">
+              <span class="plan-days">2 días</span>
+              <h3 class="plan-name">Básico</h3>
+              <div class="plan-price">
+                <span class="price-amount">$22.900</span>
+                <span class="price-period">/mes</span>
+              </div>
+            </div>
+            <ul class="plan-features">
+              <li>✅ 8 entregas al mes</li>
+              <li>✅ Horario elegido</li>
+              <li>✅ 1 tipo de pan</li>
+              <li>✅ Pausa cuando quieras</li>
+            </ul>
+            <button class="btn btn-secondary btn-block" onclick="Router.navigate('screen-configurator')">Elegir Básico</button>
+          </div>
+          <div class="plan-card plan-featured" id="plan-standard">
+            <div class="plan-badge-top">⭐ MÁS POPULAR</div>
+            <div class="plan-header">
+              <span class="plan-days">3 días</span>
+              <h3 class="plan-name">Estándar</h3>
+              <div class="plan-price">
+                <span class="price-amount">$29.900</span>
+                <span class="price-period">/mes</span>
+              </div>
+            </div>
+            <ul class="plan-features">
+              <li>✅ 12 entregas al mes</li>
+              <li>✅ Horario elegido</li>
+              <li>✅ Hasta 2 tipos de pan</li>
+              <li>✅ Pausa cuando quieras</li>
+              <li>✅ Bolsa kraft incluida</li>
+            </ul>
+            <button class="btn btn-primary btn-block" onclick="Router.navigate('screen-configurator')">Elegir Estándar</button>
+          </div>
+          <div class="plan-card" id="plan-full">
+            <div class="plan-header">
+              <span class="plan-days">5 días</span>
+              <h3 class="plan-name">Completo</h3>
+              <div class="plan-price">
+                <span class="price-amount">$44.900</span>
+                <span class="price-period">/mes</span>
+              </div>
+            </div>
+            <ul class="plan-features">
+              <li>✅ 20 entregas al mes</li>
+              <li>✅ Horario elegido</li>
+              <li>✅ Todos los tipos de pan</li>
+              <li>✅ Pausa cuando quieras</li>
+              <li>✅ Descuento en productos aliados</li>
+            </ul>
+            <button class="btn btn-secondary btn-block" onclick="Router.navigate('screen-configurator')">Elegir Completo</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="landing-footer">
+      <div class="container">
+        <div class="footer-inner">
+          <div class="footer-brand">
+            <div class="nav-logo" style="margin-bottom:var(--space-md)">
+              <div class="logo-icon">🍞</div>
+              <span style="color:var(--color-wheat)">Masa Madre Club</span>
+            </div>
+            <p style="color:rgba(245,230,200,0.6);font-size:0.9rem">
+              Agua, harina, sal y tiempo.<br>Nada más desde 2026.
+            </p>
+          </div>
+          <div class="footer-links">
+            <h4 style="color:var(--color-kraft);margin-bottom:var(--space-md);font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase">App</h4>
+            <a href="#" onclick="Router.navigate('screen-configurator')" style="color:rgba(245,230,200,0.7);display:block;margin-bottom:var(--space-sm);font-size:0.9rem">Configurar suscripción</a>
+            <a href="#" onclick="Router.navigate('screen-client-dashboard')" style="color:rgba(245,230,200,0.7);display:block;margin-bottom:var(--space-sm);font-size:0.9rem">Mi Dashboard</a>
+            <a href="#" onclick="Router.navigate('screen-partner-dashboard')" style="color:rgba(245,230,200,0.7);display:block;margin-bottom:var(--space-sm);font-size:0.9rem">Para Panaderías</a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p style="color:rgba(245,230,200,0.4);font-size:0.8rem">© 2026 Masa Madre Club SpA · Santiago, Chile · Todos los derechos reservados</p>
+        </div>
+      </div>
+    </footer>
+  </section><!-- /screen-landing -->
+
+
+  <!-- ========================================
+       SCREEN 2: CONFIGURADOR DE MEMBRESÍA
+       ======================================== -->
+  <section id="screen-configurator" class="screen">
+    <div class="screen-inner" style="padding-top:90px">
+      <div class="container">
+        <div class="config-header">
+          <button class="btn btn-ghost btn-sm" onclick="Router.navigate('screen-landing')" style="margin-bottom:var(--space-lg)">← Volver</button>
+          <div class="section-header" style="text-align:left;margin-bottom:var(--space-xl)">
+            <span class="section-eyebrow">Paso <span id="step-label">1</span> de 3</span>
+            <h2 id="config-title">Elige tu frecuencia</h2>
+            <p id="config-subtitle" class="section-subtitle" style="margin:0;text-align:left">¿Cuántos días a la semana quieres pan fresco?</p>
+          </div>
+
+          <!-- Stepper -->
+          <div class="stepper" id="stepper" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="3">
+            <div class="step-item active" id="stepper-1">
+              <div class="step-circle">1</div>
+              <span class="step-label">Frecuencia</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step-item" id="stepper-2">
+              <div class="step-circle">2</div>
+              <span class="step-label">Horario</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step-item" id="stepper-3">
+              <div class="step-circle">3</div>
+              <span class="step-label">Tu Pan</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="config-body">
+          <!-- STEP 1: Frequency + Days -->
+          <div class="config-step" id="config-step-1">
+            <h3 style="margin-bottom:var(--space-lg);font-size:1rem;color:var(--color-crust-light);font-family:var(--font-body);font-weight:600;text-transform:uppercase;letter-spacing:0.08em">Días por semana</h3>
+            <div class="freq-options" id="freq-options">
+              <button class="freq-option" data-freq="2" id="freq-2" onclick="selectFrequency(2)">
+                <div class="freq-number">2</div>
+                <div class="freq-label">días/semana</div>
+                <div class="freq-plan">Plan Básico</div>
+                <div class="freq-price">$22.900</div>
+              </button>
+              <button class="freq-option featured" data-freq="3" id="freq-3" onclick="selectFrequency(3)">
+                <div class="freq-badge">Popular</div>
+                <div class="freq-number">3</div>
+                <div class="freq-label">días/semana</div>
+                <div class="freq-plan">Plan Estándar</div>
+                <div class="freq-price">$29.900</div>
+              </button>
+              <button class="freq-option" data-freq="5" id="freq-5" onclick="selectFrequency(5)">
+                <div class="freq-number">5</div>
+                <div class="freq-label">días/semana</div>
+                <div class="freq-plan">Plan Completo</div>
+                <div class="freq-price">$44.900</div>
+              </button>
+            </div>
+
+            <div id="day-selector" class="day-selector" style="display:none">
+              <h3 style="margin-bottom:var(--space-md);font-size:1rem;color:var(--color-crust-light);font-family:var(--font-body);font-weight:600;text-transform:uppercase;letter-spacing:0.08em">Elige tus días específicos</h3>
+              <div class="days-grid" id="days-grid">
+                <!-- Filled by JS -->
+              </div>
+              <p class="days-hint" id="days-hint">Selecciona <strong>3</strong> días</p>
+            </div>
+
+            <div class="step-nav">
+              <div></div>
+              <button class="btn btn-primary" id="btn-step1-next" onclick="goToStep(2)" disabled>
+                Siguiente: Horario →
+              </button>
+            </div>
+          </div>
+
+          <!-- STEP 2: Time slot + Delivery notes -->
+          <div class="config-step" id="config-step-2" style="display:none">
+            <h3 class="step-section-label">¿En qué horario prefieres recibir tu pan?</h3>
+            <div class="time-options" id="time-options">
+              <button class="time-option" id="slot-slot1" onclick="selectSlot('slot1')" data-slot="slot1">
+                <div class="time-icon">🌅</div>
+                <div class="time-label">07:00 – 08:30</div>
+                <div class="time-desc">Perfecto para desayunar antes del trabajo</div>
+              </button>
+              <button class="time-option" id="slot-slot2" onclick="selectSlot('slot2')" data-slot="slot2">
+                <div class="time-icon">☀️</div>
+                <div class="time-label">08:30 – 10:00</div>
+                <div class="time-desc">Ideal si trabajas desde casa o tienes más tiempo</div>
+              </button>
+            </div>
+
+            <div class="form-group" style="margin-top:var(--space-xl)">
+              <label class="form-label" for="delivery-address">Dirección de entrega</label>
+              <input class="form-input" id="delivery-address" type="text" placeholder="Ej: Av. Providencia 1830, Depto 403, Providencia" />
+            </div>
+
+            <div class="form-group" style="margin-top:var(--space-md)">
+              <label class="form-label" for="delivery-notes">Instrucciones de entrega (opcional)</label>
+              <input class="form-input" id="delivery-notes" type="text" placeholder="Ej: Dejar en conserjería con el Sr. Rodrigo. Timbre 403." />
+            </div>
+
+            <div class="micro-copy" style="margin-top:var(--space-lg)">
+              <span class="icon">🔒</span>
+              <span>Las modificaciones deben hacerse con mínimo <strong>24 horas de anticipación</strong> para que la panadería ajuste su producción de masa madre.</span>
+            </div>
+
+            <div class="step-nav">
+              <button class="btn btn-secondary" onclick="goToStep(1)">← Volver</button>
+              <button class="btn btn-primary" id="btn-step2-next" onclick="goToStep(3)" disabled>
+                Siguiente: Tu Pan →
+              </button>
+            </div>
+          </div>
+
+          <!-- STEP 3: Bread types -->
+          <div class="config-step" id="config-step-3" style="display:none">
+            <h3 class="step-section-label">¿Qué pan quieres recibir?</h3>
+            <p style="color:var(--color-crust-light);margin-bottom:var(--space-xl);font-size:0.95rem">Elige uno o más tipos. Puedes combinar.</p>
+
+            <div class="bread-options" id="bread-options">
+              <!-- Filled by JS -->
+            </div>
+
+            <div id="bread-summary" class="bread-summary" style="display:none">
+              <!-- Filled by JS -->
+            </div>
+
+            <div class="step-nav" style="margin-top:var(--space-xl)">
+              <button class="btn btn-secondary" onclick="goToStep(2)">← Volver</button>
+              <button class="btn btn-primary" id="btn-step3-next" onclick="goToCheckout()">
+                Ver resumen y pagar →
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar summary (visible on step 2+) -->
+      <div class="config-sidebar" id="config-sidebar" style="display:none">
+        <div class="card card-kraft">
+          <h4 style="margin-bottom:var(--space-md);font-family:var(--font-display)">Tu suscripción</h4>
+          <div id="sidebar-summary"><!-- filled by JS --></div>
+        </div>
+      </div>
+    </div>
+  </section><!-- /screen-configurator -->
+
+
+  <!-- ========================================
+       SCREEN 3: CHECKOUT
+       ======================================== -->
+  <section id="screen-checkout" class="screen">
+    <div style="padding-top:90px">
+      <div class="container checkout-grid">
+        <!-- Left: Summary -->
+        <div class="checkout-summary">
+          <button class="btn btn-ghost btn-sm" onclick="Router.navigate('screen-configurator')" style="margin-bottom:var(--space-lg)">← Modificar plan</button>
+          <h2 style="font-family:var(--font-display);margin-bottom:var(--space-xl)">Resumen de tu suscripción</h2>
+
+          <div class="card" id="checkout-plan-card" style="margin-bottom:var(--space-lg)">
+            <!-- Filled by JS -->
+          </div>
+
+          <div class="micro-copy" style="margin-bottom:var(--space-lg)">
+            <span class="icon">♻️</span>
+            <span>Recurrencia mensual automática. Cancela o pausa cuando quieras desde tu dashboard.</span>
+          </div>
+
+          <div class="card" style="background:var(--color-wheat);border:none">
+            <h4 style="margin-bottom:var(--space-md)">🛡️ Tu pan está garantizado</h4>
+            <ul style="display:flex;flex-direction:column;gap:var(--space-sm);font-size:0.9rem;color:var(--color-crust-light)">
+              <li>✅ Pan horneado el mismo día</li>
+              <li>✅ Sin conservantes ni aditivos</li>
+              <li>✅ Fotografía de entrega en cada despacho</li>
+              <li>✅ Si no llega, te devolvemos el día</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Right: Payment form -->
+        <div class="checkout-form-section">
+          <h2 style="font-family:var(--font-display);margin-bottom:var(--space-xl)">Datos de pago</h2>
+
+          <div class="form-group">
+            <label class="form-label" for="ch-name">Nombre completo</label>
+            <input class="form-input" id="ch-name" type="text" placeholder="María Fernández González" />
+          </div>
+
+          <div class="form-group" style="margin-top:var(--space-md)">
+            <label class="form-label" for="ch-email">Email</label>
+            <input class="form-input" id="ch-email" type="email" placeholder="maria@gmail.com" />
+          </div>
+
+          <div class="form-group" style="margin-top:var(--space-md)">
+            <label class="form-label" for="ch-phone">Teléfono</label>
+            <input class="form-input" id="ch-phone" type="tel" placeholder="+56 9 1234 5678" />
+          </div>
+
+          <div class="divider"></div>
+
+          <h3 style="font-family:var(--font-display);margin-bottom:var(--space-lg);font-size:1.1rem">Método de pago</h3>
+
+          <div class="payment-methods">
+            <button class="pay-method active" id="pay-webpay" onclick="selectPayMethod('webpay')">
+              <div class="pay-method-icon">💳</div>
+              <div>
+                <div class="pay-method-name">Webpay Plus</div>
+                <div class="pay-method-sub">Tarjeta débito o crédito</div>
+              </div>
+            </button>
+            <button class="pay-method" id="pay-mach" onclick="selectPayMethod('mach')">
+              <div class="pay-method-icon">📱</div>
+              <div>
+                <div class="pay-method-name">MACH / Mercado Pago</div>
+                <div class="pay-method-sub">Billetera digital</div>
+              </div>
+            </button>
+            <button class="pay-method" id="pay-transfer" onclick="selectPayMethod('transfer')">
+              <div class="pay-method-icon">🏦</div>
+              <div>
+                <div class="pay-method-name">Transferencia bancaria</div>
+                <div class="pay-method-sub">Manual, verificación 24h</div>
+              </div>
+            </button>
+          </div>
+
+          <div id="card-form" style="margin-top:var(--space-lg)">
+            <div class="form-group">
+              <label class="form-label" for="ch-card">Número de tarjeta</label>
+              <input class="form-input" id="ch-card" type="text" placeholder="4xxx xxxx xxxx xxxx" maxlength="19"
+                oninput="this.value=this.value.replace(/\D/g,'').replace(/(.{4})/g,'$1 ').trim()" />
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md);margin-top:var(--space-md)">
+              <div class="form-group">
+                <label class="form-label" for="ch-exp">Vencimiento</label>
+                <input class="form-input" id="ch-exp" type="text" placeholder="MM/AA" maxlength="5" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="ch-cvv">CVV</label>
+                <input class="form-input" id="ch-cvv" type="text" placeholder="123" maxlength="3" />
+              </div>
+            </div>
+          </div>
+
+          <div class="checkout-total-bar" id="checkout-total">
+            <!-- Filled by JS -->
+          </div>
+
+          <button class="btn btn-primary btn-lg btn-block" id="btn-pay" onclick="processPayment()" style="margin-top:var(--space-lg)">
+            🔒 Suscribirme ahora
+          </button>
+
+          <p style="text-align:center;font-size:0.8rem;color:var(--color-kraft);margin-top:var(--space-md)">
+            Pago seguro · Sin compromisos · Cancela cuando quieras
+          </p>
+        </div>
+      </div>
+    </div>
+  </section><!-- /screen-checkout -->
+
+
+  <!-- ========================================
+       SCREEN 4: CLIENT DASHBOARD
+       ======================================== -->
+  <section id="screen-client-dashboard" class="screen">
+    <div style="padding-top:90px">
+      <div class="container">
+
+        <!-- Header -->
+        <div class="dash-header">
+          <div>
+            <p class="section-eyebrow" style="margin-bottom:4px">¡Buenos días!</p>
+            <h2 style="font-family:var(--font-display)">María Fernández 👋</h2>
+            <p style="color:var(--color-crust-light);margin-top:4px">Plan Estándar · 3 días por semana</p>
+          </div>
+          <div class="dash-actions">
+            <button class="btn btn-secondary btn-sm" onclick="openPauseModal()">⏸ Pausar suscripción</button>
+            <button class="btn btn-ghost btn-sm" onclick="Router.navigate('screen-configurator')">✏️ Modificar plan</button>
+          </div>
+        </div>
+
+        <!-- Next delivery hero card -->
+        <div class="next-delivery-card" id="next-delivery-card">
+          <div class="next-delivery-info">
+            <span class="section-eyebrow" style="color:rgba(245,230,200,0.7)">Próxima entrega</span>
+            <h3 id="next-del-date" style="font-family:var(--font-display);color:white;font-size:1.6rem;margin:8px 0">Jueves 5 de junio</h3>
+            <div class="next-del-status" id="next-del-status">
+              <!-- Filled by JS -->
+            </div>
+            <div style="margin-top:var(--space-md)">
+              <p style="color:rgba(245,230,200,0.8);font-size:0.9rem">
+                🕐 07:00 – 08:30 · Conserjería Rodrigo
+              </p>
+            </div>
+          </div>
+          <div class="delivery-tracker" id="delivery-tracker">
+            <!-- Filled by JS -->
+          </div>
+        </div>
+
+        <!-- 24h warning -->
+        <div class="micro-copy" id="modification-warning" style="margin-bottom:var(--space-lg)">
+          <span class="icon">⏰</span>
+          <span>Para modificar tu próxima entrega de mañana ya no es posible — requiere <strong>24 horas de anticipación</strong>. Puedes modificar las entregas del Miércoles en adelante.</span>
+        </div>
+
+        <!-- Stats row -->
+        <div class="dash-stats">
+          <div class="stat-card" id="stat-1">
+            <div class="stat-icon">🍞</div>
+            <div class="stat-value">47</div>
+            <div class="stat-label">Panes recibidos</div>
+          </div>
+          <div class="stat-card" id="stat-2">
+            <div class="stat-icon">📅</div>
+            <div class="stat-value">16</div>
+            <div class="stat-label">Entregas este mes</div>
+          </div>
+          <div class="stat-card" id="stat-3">
+            <div class="stat-icon">🌱</div>
+            <div class="stat-value">94g</div>
+            <div class="stat-label">CO₂ ahorrado</div>
+          </div>
+          <div class="stat-card" id="stat-4">
+            <div class="stat-icon">⭐</div>
+            <div class="stat-value">4.9</div>
+            <div class="stat-label">Tu calificación</div>
+          </div>
+        </div>
+
+        <!-- Upcoming deliveries -->
+        <div style="margin-top:var(--space-2xl)">
+          <h3 style="font-family:var(--font-display);margin-bottom:var(--space-lg)">Próximas entregas</h3>
+          <div class="deliveries-list" id="upcoming-deliveries">
+            <!-- Filled by JS -->
+          </div>
+        </div>
+
+        <!-- Micro copy inspirational -->
+        <div class="inspiration-strip">
+          <div class="inspiration-inner" id="inspiration-text">
+            <!-- Filled by JS -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Pause Modal -->
+    <div class="modal-overlay" id="pause-modal">
+      <div class="modal">
+        <h3 style="font-family:var(--font-display);margin-bottom:var(--space-md)">⏸ Pausar suscripción</h3>
+        <p style="color:var(--color-crust-light);margin-bottom:var(--space-xl)">
+          ¿Te vas de viaje? Sin problemas. Tu masa madre te espera a la vuelta.
+        </p>
+        <div class="form-group">
+          <label class="form-label" for="pause-from">Pausa desde</label>
+          <input class="form-input" id="pause-from" type="date" />
+        </div>
+        <div class="form-group" style="margin-top:var(--space-md)">
+          <label class="form-label" for="pause-to">Reanudar el</label>
+          <input class="form-input" id="pause-to" type="date" />
+        </div>
+        <div class="micro-copy" style="margin:var(--space-lg) 0">
+          <span class="icon">ℹ️</span>
+          <span>El cobro se prorratea automáticamente. Solo pagas los días que recibiste pan.</span>
+        </div>
+        <div style="display:flex;gap:var(--space-md)">
+          <button class="btn btn-secondary" style="flex:1" onclick="Modal.close('pause-modal')">Cancelar</button>
+          <button class="btn btn-primary" style="flex:1" onclick="confirmPause()">Confirmar pausa</button>
+        </div>
+      </div>
+    </div>
+  </section><!-- /screen-client-dashboard -->
+
+
+  <!-- ========================================
+       SCREEN 5: PARTNER DASHBOARD (Panadería)
+       ======================================== -->
+  <section id="screen-partner-dashboard" class="screen">
+    <div style="padding-top:90px">
+      <div class="container">
+
+        <!-- Header -->
+        <div class="dash-header">
+          <div>
+            <p class="section-eyebrow" style="margin-bottom:4px">Dashboard Panadería</p>
+            <h2 style="font-family:var(--font-display)">Panadería El Abuelo 🏪</h2>
+            <p style="color:var(--color-crust-light);margin-top:4px">Ñuñoa, Santiago · Producción para mañana: Jueves 5 jun.</p>
+          </div>
+          <div class="dash-actions">
+            <span class="badge badge-sage">🟢 Producción activa</span>
+          </div>
+        </div>
+
+        <!-- Production tab bar -->
+        <div class="tab-bar" id="partner-tabs">
+          <button class="tab-btn active" data-tab="production" onclick="switchPartnerTab('production')">📋 Producción del Día</button>
+          <button class="tab-btn" data-tab="efecto-ojo" onclick="switchPartnerTab('efecto-ojo')">👁 Efecto Ojo</button>
+        </div>
+
+        <!-- TAB: Production -->
+        <div id="tab-production" class="tab-content active">
+          <!-- Alert: zero-waste -->
+          <div class="alert-production">
+            <div class="alert-icon">🎯</div>
+            <div>
+              <h4>Producción exacta = Cero Merma</h4>
+              <p>Solo hornea lo que ya está vendido. Cada unidad tiene un suscriptor esperándola.</p>
+            </div>
+            <div class="alert-stat">
+              <div class="alert-stat-value" id="total-units">74</div>
+              <div class="alert-stat-label">unidades totales</div>
+            </div>
+          </div>
+
+          <!-- Production grid -->
+          <div class="production-grid" id="production-items">
+            <!-- Filled by JS -->
+          </div>
+
+          <!-- Ingredients chart -->
+          <div style="margin-top:var(--space-2xl)">
+            <h3 style="font-family:var(--font-display);margin-bottom:var(--space-lg)">Insumos necesarios para mañana</h3>
+            <div class="ingredients-list" id="ingredients-list">
+              <!-- Filled by JS -->
+            </div>
+          </div>
+
+          <!-- Production status timeline -->
+          <div style="margin-top:var(--space-2xl)">
+            <h3 style="font-family:var(--font-display);margin-bottom:var(--space-lg)">Estado de producción</h3>
+            <div class="production-timeline" id="production-timeline">
+              <div class="timeline-step done" id="tl-1">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <div class="timeline-time">Ayer 18:00</div>
+                  <div class="timeline-label">Pedido de producción generado automáticamente</div>
+                </div>
+              </div>
+              <div class="timeline-step done" id="tl-2">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <div class="timeline-time">Ayer 20:00</div>
+                  <div class="timeline-label">Starter de masa madre activado 🧫</div>
+                </div>
+              </div>
+              <div class="timeline-step active" id="tl-3">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <div class="timeline-time">Hoy 04:30</div>
+                  <div class="timeline-label">🔥 Horneado en progreso</div>
+                </div>
+              </div>
+              <div class="timeline-step" id="tl-4">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <div class="timeline-time">06:30</div>
+                  <div class="timeline-label">Entrega al repartidor</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: Efecto Ojo -->
+        <div id="tab-efecto-ojo" class="tab-content" style="display:none">
+          <div class="efecto-header">
+            <div class="efecto-description">
+              <h3 style="font-family:var(--font-display);margin-bottom:var(--space-sm)">👁 El Módulo Efecto Ojo</h3>
+              <p style="color:var(--color-crust-light)">
+                Miniatures del mismo pan en el mostrador del almacén. 
+                Empaquetadas en bolsa kraft. Visible para quien pasa. Genera venta cruzada natural.
+              </p>
+              <div class="micro-copy" style="margin-top:var(--space-md)">
+                <span class="icon">💡</span>
+                <span>El vecino ve el pan, lo prueba, y se suscribe. Sin publicidad pagada.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="efecto-grid" id="efecto-stock">
+            <!-- Filled by JS -->
+          </div>
+
+          <!-- Cross-sell products -->
+          <div style="margin-top:var(--space-2xl)">
+            <h3 style="font-family:var(--font-display);margin-bottom:var(--space-lg)">Productos aliados en mostrador</h3>
+            <div class="cross-sell-grid" id="cross-sell-grid">
+              <!-- Filled by JS -->
+            </div>
+          </div>
+
+          <div class="micro-copy" style="margin-top:var(--space-xl)">
+            <span class="icon">🥑</span>
+            <span>"Palta + pan de masa madre = el desayuno chileno perfecto." — Estrategia de venta cruzada integrada.</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section><!-- /screen-partner-dashboard -->
+
+
+  <!-- ========================================
+       SCREEN 6: DELIVERY DASHBOARD (Repartidor)
+       ======================================== -->
+  <section id="screen-delivery" class="screen">
+    <div style="padding-top:90px">
+      <div class="container">
+
+        <!-- Header -->
+        <div class="dash-header">
+          <div>
+            <p class="section-eyebrow" style="margin-bottom:4px">Hoja de Ruta Matutina</p>
+            <h2 style="font-family:var(--font-display)">Carlos Muñoz 🚲</h2>
+            <p style="color:var(--color-crust-light);margin-top:4px">Jueves 5 de junio · 07:00 – 08:30 · Providencia</p>
+          </div>
+          <div class="delivery-progress-ring" id="delivery-progress">
+            <!-- Filled by JS -->
+          </div>
+        </div>
+
+        <!-- Route map placeholder -->
+        <div class="route-map" id="route-map">
+          <div class="map-overlay">
+            <div class="map-label">
+              🗺️ Ruta optimizada por geolocalización
+            </div>
+            <div class="map-pins" id="map-pins">
+              <!-- Filled by JS -->
+            </div>
+          </div>
+          <div class="map-bg"></div>
+        </div>
+
+        <!-- Deliveries list -->
+        <div style="margin-top:var(--space-xl)">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-lg)">
+            <h3 style="font-family:var(--font-display)">Entregas de hoy</h3>
+            <div id="delivery-count-badge"><!-- Filled by JS --></div>
+          </div>
+
+          <div class="delivery-route-list" id="delivery-route-list">
+            <!-- Filled by JS -->
+          </div>
+        </div>
+
+        <!-- Eco stats -->
+        <div class="eco-stats" id="eco-stats">
+          <div class="eco-stat">
+            <span class="eco-icon">🚲</span>
+            <div>
+              <div class="eco-value">4.2 km</div>
+              <div class="eco-label">Ruta total</div>
+            </div>
+          </div>
+          <div class="eco-stat">
+            <span class="eco-icon">🌱</span>
+            <div>
+              <div class="eco-value">0 kg</div>
+              <div class="eco-label">CO₂ emitido</div>
+            </div>
+          </div>
+          <div class="eco-stat">
+            <span class="eco-icon">⚡</span>
+            <div>
+              <div class="eco-value">74 panes</div>
+              <div class="eco-label">Entregados hoy</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Photo proof modal -->
+    <div class="modal-overlay" id="photo-modal">
+      <div class="modal">
+        <h3 style="font-family:var(--font-display);margin-bottom:var(--space-md)">📸 Marcar como entregado</h3>
+        <p id="photo-modal-address" style="color:var(--color-crust-light);margin-bottom:var(--space-lg)"></p>
+        <div class="photo-upload-area" id="photo-upload">
+          <div class="photo-upload-icon">📷</div>
+          <p>Toca para simular foto de comprobante</p>
+          <p style="font-size:0.8rem;opacity:0.6;margin-top:4px">Se enviará al cliente automáticamente</p>
+        </div>
+        <div style="display:flex;gap:var(--space-md);margin-top:var(--space-lg)">
+          <button class="btn btn-secondary" style="flex:1" onclick="Modal.close('photo-modal')">Cancelar</button>
+          <button class="btn btn-sage" style="flex:1" id="btn-confirm-delivery" onclick="confirmDelivery()">✅ Confirmar entrega</button>
+        </div>
+      </div>
+    </div>
+  </section><!-- /screen-delivery -->
+
+</div><!-- /app -->
+
+<!-- ===== SCRIPTS ===== -->
+<script src="js/data.js"></script>
+<script src="js/router.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
