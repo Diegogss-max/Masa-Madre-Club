@@ -182,27 +182,53 @@ document.addEventListener('DOMContentLoaded', () => {
   if (addr) addr.addEventListener('input', updateStep2Button);
 });
 
+function calculateExtraCost(cfg) {
+  const limit = cfg.daysPerWeek === 2 ? 4 : (cfg.daysPerWeek === 3 ? 6 : 8);
+  const selectedItems = [];
+  Object.entries(cfg.breadTypes).forEach(([type, qty]) => {
+    const bread = MMC.BREAD_TYPES.find(b => b.type === type);
+    for (let i = 0; i < qty; i++) {
+      selectedItems.push(bread.price_per_unit);
+    }
+  });
+
+  if (selectedItems.length <= limit) {
+    return { extraPerDelivery: 0, extraPerMonth: 0, totalItems: selectedItems.length, limit };
+  }
+
+  // Sort prices descending to cover most expensive items in the plan
+  selectedItems.sort((a, b) => b - a);
+
+  const extraItems = selectedItems.slice(limit);
+  const extraPerDelivery = extraItems.reduce((sum, p) => sum + p, 0);
+
+  const deliveriesPerMonth = cfg.daysPerWeek * 4;
+  const extraPerMonth = extraPerDelivery * deliveriesPerMonth;
+
+  return { extraPerDelivery, extraPerMonth, totalItems: selectedItems.length, limit };
+}
+
 function renderBreadOptions() {
   const container = document.getElementById('bread-options');
   if (!container) return;
 
   container.innerHTML = MMC.BREAD_TYPES.map(bread => `
-    <button class="bread-option" id="bread-${bread.type}" onclick="toggleBread('${bread.type}')">
-      <div class="bread-emoji">${bread.emoji}</div>
-      <div class="bread-info">
-        <h4>${bread.label}</h4>
-        <p>${bread.description}</p>
-        <div class="bread-tags">
-          ${bread.tags.map(t => `<span class="bread-tag">${t}</span>`).join('')}
+    <button class="bread-option" id="bread-${bread.type}" onclick="toggleBread('${bread.type}')" style="display:flex;align-items:center;gap:var(--space-md);padding:var(--space-md);text-align:left;width:100%;background:white;border:2px solid var(--color-kraft-light);border-radius:var(--radius-xl);cursor:pointer;transition:all var(--transition-base)">
+      <img src="${bread.image}" alt="${bread.label}" class="bread-img-thumb" style="width:90px;height:90px;object-fit:cover;border-radius:var(--radius-md);flex-shrink:0" />
+      <div class="bread-info" style="flex:1">
+        <h4 style="margin:0 0 4px 0">${bread.emoji} ${bread.label}</h4>
+        <p style="margin:0 0 var(--space-sm) 0;font-size:0.85rem;color:var(--color-crust-light);line-height:1.4">${bread.description}</p>
+        <div class="bread-tags" style="display:flex;gap:4px;flex-wrap:wrap">
+          ${bread.tags.map(t => `<span class="bread-tag" style="font-size:0.7rem;padding:2px 8px;background:rgba(122,158,126,0.1);color:var(--color-sage-dark);border-radius:var(--radius-full)">${t}</span>`).join('')}
         </div>
       </div>
-      <div class="bread-qty" id="bread-qty-${bread.type}" style="display:none">
-        <div class="qty-control">
-          <button class="qty-btn" onclick="event.stopPropagation();changeQty('${bread.type}', -1)">-</button>
-          <span class="qty-value" id="qty-val-${bread.type}">1</span>
-          <button class="qty-btn" onclick="event.stopPropagation();changeQty('${bread.type}', 1)">+</button>
+      <div class="bread-qty" id="bread-qty-${bread.type}" style="display:none;flex-direction:column;align-items:center;gap:8px">
+        <div class="qty-control" style="display:flex;align-items:center;gap:8px;background:var(--color-wheat);padding:4px;border-radius:var(--radius-full)">
+          <button class="qty-btn" onclick="event.stopPropagation();changeQty('${bread.type}', -1)" style="width:28px;height:28px;border-radius:50%;background:white;border:1px solid var(--color-kraft-light);display:flex;align-items:center;justify-content:center;font-weight:bold;cursor:pointer">-</button>
+          <span class="qty-value" id="qty-val-${bread.type}" style="font-weight:bold;min-width:20px;text-align:center">1</span>
+          <button class="qty-btn" onclick="event.stopPropagation();changeQty('${bread.type}', 1)" style="width:28px;height:28px;border-radius:50%;background:white;border:1px solid var(--color-kraft-light);display:flex;align-items:center;justify-content:center;font-weight:bold;cursor:pointer">+</button>
         </div>
-        <div class="bread-price" style="color:var(--color-sage-dark)">Incluido en plan</div>
+        <div class="bread-price" style="font-size:0.78rem;color:var(--color-sage-dark);font-weight:600">Incluido</div>
       </div>
     </button>
   `).join('');
@@ -210,7 +236,7 @@ function renderBreadOptions() {
 
 function toggleBread(type) {
   const cfg = MMC.STATE.configurator;
-  const maxQuota = cfg.daysPerWeek === 2 ? 1 : (cfg.daysPerWeek === 3 ? 2 : 3);
+  const maxQuota = cfg.daysPerWeek === 2 ? 4 : (cfg.daysPerWeek === 3 ? 6 : 8);
 
   if (cfg.breadTypes[type]) {
     delete cfg.breadTypes[type];
@@ -219,8 +245,7 @@ function toggleBread(type) {
   } else {
     const currentTotal = Object.values(cfg.breadTypes).reduce((sum, q) => sum + q, 0);
     if (currentTotal >= maxQuota) {
-      Toast.show(`Límite alcanzado: Tu plan permite un máximo de ${maxQuota} ${maxQuota === 1 ? 'pan' : 'panes'} por entrega`, 'warning');
-      return;
+      Toast.show(`Excedes la cuota del plan (${maxQuota} panes). Cada unidad extra se cobrará adicional.`, 'info');
     }
     cfg.breadTypes[type] = 1;
     document.getElementById(`bread-${type}`).classList.add('selected');
@@ -235,14 +260,18 @@ function changeQty(type, delta) {
   if (!cfg.breadTypes[type]) return;
 
   const currentTotal = Object.values(cfg.breadTypes).reduce((sum, q) => sum + q, 0);
-  const maxQuota = cfg.daysPerWeek === 2 ? 1 : (cfg.daysPerWeek === 3 ? 2 : 3);
+  const maxQuota = cfg.daysPerWeek === 2 ? 4 : (cfg.daysPerWeek === 3 ? 6 : 8);
 
   if (delta > 0 && currentTotal >= maxQuota) {
-    Toast.show(`Límite alcanzado: Tu plan permite un máximo de ${maxQuota} ${maxQuota === 1 ? 'pan' : 'panes'} por entrega`, 'warning');
+    Toast.show(`Excedes la cuota del plan (${maxQuota} panes). Cada unidad extra se cobrará adicional.`, 'info');
+  }
+
+  if (delta > 0 && currentTotal >= 15) {
+    Toast.show(`Límite máximo absoluto de 15 panes por entrega alcanzado.`, 'warning');
     return;
   }
 
-  cfg.breadTypes[type] = Math.max(1, Math.min(maxQuota, cfg.breadTypes[type] + delta));
+  cfg.breadTypes[type] = Math.max(1, Math.min(15, cfg.breadTypes[type] + delta));
   const valEl = document.getElementById(`qty-val-${type}`);
   if (valEl) valEl.textContent = cfg.breadTypes[type];
 
@@ -253,9 +282,6 @@ function updateBreadSummary() {
   const cfg = MMC.STATE.configurator;
   const summary = document.getElementById('bread-summary');
   const btn = document.getElementById('btn-step3-next');
-
-  const currentTotal = Object.values(cfg.breadTypes).reduce((sum, q) => sum + q, 0);
-  const maxQuota = cfg.daysPerWeek === 2 ? 1 : (cfg.daysPerWeek === 3 ? 2 : 3);
 
   const hasSelection = Object.keys(cfg.breadTypes).length > 0;
   if (btn) btn.disabled = !hasSelection;
@@ -269,6 +295,8 @@ function updateBreadSummary() {
 
   summary.style.display = 'block';
 
+  const extra = calculateExtraCost(cfg);
+
   const items = Object.entries(cfg.breadTypes).map(([type, qty]) => {
     const bread = MMC.BREAD_TYPES.find(b => b.type === type);
     return `<div class="sidebar-row">
@@ -277,14 +305,29 @@ function updateBreadSummary() {
     </div>`;
   }).join('');
 
+  let extraHTML = '';
+  if (extra.extraPerDelivery > 0) {
+    extraHTML = `
+      <div class="divider" style="margin:var(--space-sm) 0"></div>
+      <div class="sidebar-row" style="color:var(--color-warning);font-weight:600">
+        <span>⚠️ Exceso de cuota (${extra.totalItems - extra.limit} panes extra)</span>
+        <span>+${MMC.formatCLP(extra.extraPerDelivery)}/entrega</span>
+      </div>
+      <div style="font-size:0.8rem;color:var(--color-crust-light);text-align:right">
+        (+${MMC.formatCLP(extra.extraPerMonth)}/mes adicional)
+      </div>
+    `;
+  }
+
   summary.innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-md)">
       <h4 style="font-family:var(--font-display);margin:0">🛒 Tu selección</h4>
-      <span class="badge ${currentTotal === maxQuota ? 'badge-success' : 'badge-earth'}">
-        Cuota: ${currentTotal}/${maxQuota} panes
+      <span class="badge ${extra.totalItems > extra.limit ? 'badge-warning' : 'badge-success'}">
+        Cuota: ${extra.totalItems}/${extra.limit} panes
       </span>
     </div>
     ${items}
+    ${extraHTML}
   `;
 }
 
@@ -294,6 +337,8 @@ function renderSidebarSummary() {
   if (!sidebar) return;
 
   const plan = MMC.PLANS[cfg.daysPerWeek];
+  const extra = calculateExtraCost(cfg);
+  const totalMonth = (plan ? plan.price : 0) + extra.extraPerMonth;
 
   sidebar.innerHTML = `
     <div class="sidebar-row">
@@ -308,9 +353,14 @@ function renderSidebarSummary() {
       <span class="sidebar-key">Horario</span>
       <span class="sidebar-val">${cfg.timeSlot ? MMC.TIME_SLOTS.find(s => s.id === cfg.timeSlot)?.label || '—' : '—'}</span>
     </div>
-    <div class="sidebar-row" style="margin-top:var(--space-sm)">
+    ${extra.extraPerMonth > 0 ? `
+    <div class="sidebar-row" style="color:var(--color-warning)">
+      <span class="sidebar-key">Panes adicionales</span>
+      <span class="sidebar-val">+${MMC.formatCLP(extra.extraPerMonth)}/mes</span>
+    </div>` : ''}
+    <div class="sidebar-row" style="margin-top:var(--space-sm);border-top:1px solid var(--color-kraft-light);padding-top:8px">
       <span class="sidebar-key">Total mensual</span>
-      <span class="sidebar-price">${plan ? MMC.formatCLP(plan.price) : '—'}</span>
+      <span class="sidebar-price">${MMC.formatCLP(totalMonth)}</span>
     </div>
   `;
 }
@@ -322,8 +372,11 @@ function goToCheckout() {
     return;
   }
 
+  const extra = calculateExtraCost(cfg);
+
   MMC.STATE.checkout.plan = MMC.PLANS[cfg.daysPerWeek];
-  MMC.STATE.checkout.price = MMC.PLANS[cfg.daysPerWeek]?.price || 0;
+  MMC.STATE.checkout.price = (MMC.PLANS[cfg.daysPerWeek]?.price || 0) + extra.extraPerMonth;
+  MMC.STATE.checkout.extraPerMonth = extra.extraPerMonth;
 
   Router.navigate('screen-checkout');
 }
@@ -345,6 +398,7 @@ function renderCheckoutSummary() {
   if (!card) return;
 
   const slot = MMC.TIME_SLOTS.find(s => s.id === cfg.timeSlot);
+  const extra = calculateExtraCost(cfg);
 
   const breadItems = Object.entries(cfg.breadTypes).map(([type, qty]) => {
     const bread = MMC.BREAD_TYPES.find(b => b.type === type);
@@ -358,6 +412,18 @@ function renderCheckoutSummary() {
     <span class="checkout-plan-name">Masa Madre Integral × 2</span>
     <span class="checkout-plan-price" style="color:var(--color-sage-dark);font-weight:600">Incluido</span>
   </div>`;
+
+  let extraSection = '';
+  if (extra.extraPerDelivery > 0) {
+    extraSection = `
+      <div class="divider"></div>
+      <div class="checkout-plan-item" style="color:var(--color-warning)">
+        <span class="checkout-plan-emoji">⚠️</span>
+        <span class="checkout-plan-name">Exceso de cuota (${extra.totalItems - extra.limit} panes extra)</span>
+        <span class="checkout-plan-price">+${MMC.formatCLP(extra.extraPerMonth)}/mes</span>
+      </div>
+    `;
+  }
 
   card.innerHTML = `
     <div style="display:flex;align-items:center;gap:var(--space-md);margin-bottom:var(--space-lg)">
@@ -379,20 +445,22 @@ function renderCheckoutSummary() {
     <div class="divider"></div>
     <h4 style="margin-bottom:var(--space-sm);font-size:0.9rem">Tu pan:</h4>
     ${breadItems}
+    ${extraSection}
   `;
 }
 
 function renderCheckoutTotal() {
   const plan = MMC.STATE.checkout.plan || MMC.PLANS[3];
+  const extraPerMonth = MMC.STATE.checkout.extraPerMonth || 0;
   const container = document.getElementById('checkout-total');
   if (!container) return;
 
   const subtotal = plan.price;
-  const delivery = 0;
-  const total = subtotal + delivery;
+  const total = subtotal + extraPerMonth;
 
   container.innerHTML = `
     <div class="total-row"><span>Suscripción ${plan.label}</span><span>${MMC.formatCLP(subtotal)}/mes</span></div>
+    ${extraPerMonth > 0 ? `<div class="total-row"><span>Panes adicionales</span><span>${MMC.formatCLP(extraPerMonth)}/mes</span></div>` : ''}
     <div class="total-row"><span>Despacho</span><span style="color:var(--color-sage-dark);font-weight:600">¡Gratis!</span></div>
     <div class="total-final"><span>Total mensual</span><span class="amount">${MMC.formatCLP(total)}</span></div>
   `;

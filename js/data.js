@@ -306,7 +306,8 @@ const MMC = (function() {
       emoji: '🌾',
       description: 'El clásico. Fermentación lenta 18 horas. Sin levadura comercial.',
       tags: ['Alta fibra', 'Sin aditivos', 'Digestión fácil'],
-      price_per_unit: 1200
+      price_per_unit: 1200,
+      image: 'assets/bread_integral.png'
     },
     {
       type: 'semillas',
@@ -314,7 +315,8 @@ const MMC = (function() {
       emoji: '🌻',
       description: 'Rellena de chía, linaza y semillas de zapallo. Omega-3 natural.',
       tags: ['Omega-3', 'Sin gluten añadido', 'Saciedad'],
-      price_per_unit: 1400
+      price_per_unit: 1400,
+      image: 'assets/bread_semillas.png'
     },
     {
       type: 'baguette_fit',
@@ -322,7 +324,8 @@ const MMC = (function() {
       emoji: '🥖',
       description: 'Formato clásico francés pero con masa madre real. Corteza crujiente.',
       tags: ['Bajo índice glicémico', 'Corteza artesanal', 'Formato familiar'],
-      price_per_unit: 1100
+      price_per_unit: 1100,
+      image: 'assets/bread_baguette.png'
     }
   ];
 
