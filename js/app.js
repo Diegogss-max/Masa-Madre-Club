@@ -210,12 +210,18 @@ function renderBreadOptions() {
 
 function toggleBread(type) {
   const cfg = MMC.STATE.configurator;
+  const maxQuota = cfg.daysPerWeek === 2 ? 1 : (cfg.daysPerWeek === 3 ? 2 : 3);
 
   if (cfg.breadTypes[type]) {
     delete cfg.breadTypes[type];
     document.getElementById(`bread-${type}`).classList.remove('selected');
     document.getElementById(`bread-qty-${type}`).style.display = 'none';
   } else {
+    const currentTotal = Object.values(cfg.breadTypes).reduce((sum, q) => sum + q, 0);
+    if (currentTotal >= maxQuota) {
+      Toast.show(`Límite alcanzado: Tu plan permite un máximo de ${maxQuota} ${maxQuota === 1 ? 'pan' : 'panes'} por entrega`, 'warning');
+      return;
+    }
     cfg.breadTypes[type] = 1;
     document.getElementById(`bread-${type}`).classList.add('selected');
     document.getElementById(`bread-qty-${type}`).style.display = 'flex';
@@ -228,7 +234,15 @@ function changeQty(type, delta) {
   const cfg = MMC.STATE.configurator;
   if (!cfg.breadTypes[type]) return;
 
-  cfg.breadTypes[type] = Math.max(1, Math.min(5, cfg.breadTypes[type] + delta));
+  const currentTotal = Object.values(cfg.breadTypes).reduce((sum, q) => sum + q, 0);
+  const maxQuota = cfg.daysPerWeek === 2 ? 1 : (cfg.daysPerWeek === 3 ? 2 : 3);
+
+  if (delta > 0 && currentTotal >= maxQuota) {
+    Toast.show(`Límite alcanzado: Tu plan permite un máximo de ${maxQuota} ${maxQuota === 1 ? 'pan' : 'panes'} por entrega`, 'warning');
+    return;
+  }
+
+  cfg.breadTypes[type] = Math.max(1, Math.min(maxQuota, cfg.breadTypes[type] + delta));
   const valEl = document.getElementById(`qty-val-${type}`);
   if (valEl) valEl.textContent = cfg.breadTypes[type];
 
@@ -239,6 +253,9 @@ function updateBreadSummary() {
   const cfg = MMC.STATE.configurator;
   const summary = document.getElementById('bread-summary');
   const btn = document.getElementById('btn-step3-next');
+
+  const currentTotal = Object.values(cfg.breadTypes).reduce((sum, q) => sum + q, 0);
+  const maxQuota = cfg.daysPerWeek === 2 ? 1 : (cfg.daysPerWeek === 3 ? 2 : 3);
 
   const hasSelection = Object.keys(cfg.breadTypes).length > 0;
   if (btn) btn.disabled = !hasSelection;
@@ -261,7 +278,12 @@ function updateBreadSummary() {
   }).join('');
 
   summary.innerHTML = `
-    <h4 style="font-family:var(--font-display);margin-bottom:var(--space-md)">🛒 Tu selección</h4>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-md)">
+      <h4 style="font-family:var(--font-display);margin:0">🛒 Tu selección</h4>
+      <span class="badge ${currentTotal === maxQuota ? 'badge-success' : 'badge-earth'}">
+        Cuota: ${currentTotal}/${maxQuota} panes
+      </span>
+    </div>
     ${items}
   `;
 }
